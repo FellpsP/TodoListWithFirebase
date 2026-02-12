@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 /** Gemini início
  *
- * Prompt: Crie uma interface TaskRepository para as operações de CRUD (Get, Add, Update, Delete). A função de pegar tarefas (getTasks) deve retornar um Flow de Response List Task para atualizações em tempo real.
+ * Prompt: Otimize e Crie uma interface TaskRepository para as operações de CRUD
+ * (Get, Add, Update, Delete).
+ * A função de pegar tarefas (getTasks) deve retornar um Flow de Response List Task para atualizações em tempo real.
  *
  */
 interface TaskRepository {

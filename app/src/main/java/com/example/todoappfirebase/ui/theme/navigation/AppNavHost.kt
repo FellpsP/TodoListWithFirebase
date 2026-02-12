@@ -15,6 +15,13 @@ import com.example.todoappfirebase.ui.task.ListScreen
  * Defina os composables para LoginScreen, SignUpScreen e ListScreen, passando o navController para eles.
  *
  */
+/**
+ * Componente Composable principal que gerencia a navegação dentro do aplicativo.
+ * Define as telas disponíveis e suas respectivas rotas, utilizando o [NavHost] do Jetpack Compose.
+ *
+ * @param navController O controlador de navegação usado para navegar entre as telas.
+ * @param startDestination A rota inicial do aplicativo. Por padrão, é a tela de Login.
+ */
 @Composable
 fun AppNavHost(
     navController: NavHostController,
@@ -24,12 +31,15 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        // Define a rota para a tela de Login, associando-a ao Composable LoginScreen
         composable(Routes.Login.route) {
             LoginScreen(navController = navController)
         }
+        // Define a rota para a tela de Cadastro, associando-a ao Composable SignUpScreen
         composable(Routes.SignUp.route) {
             SignUpScreen(navController = navController)
         }
+        // Define a rota para a tela principal de listagem de tarefas (Home), associando-a ao Composable ListScreen
         composable(Routes.Home.route) {
             ListScreen(navController = navController)
         }

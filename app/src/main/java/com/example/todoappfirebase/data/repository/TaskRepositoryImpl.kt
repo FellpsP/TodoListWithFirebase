@@ -12,8 +12,9 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
+ * Gemini Inicio: (FIX)
  * TaskRepositoryImpl CORRIGIDO
- *
+ * Com as mudanças do Firebase esta parte
  * Correção principal: updateTask agora usa .update() ao invés de .set()
  * Isso resolve o problema das checkboxes que não funcionavam
  */
@@ -94,24 +95,6 @@ class TaskRepositoryImpl @Inject constructor(
             Response.Error(e.localizedMessage ?: "Erro ao salvar tarefa")
         }
     }
-
-//    override suspend fun updateTask(task: Task): Response<Boolean> {
-//        return try {
-//            // CORREÇÃO PRINCIPAL: Usar .update() com mapOf ao invés de .set()
-//            // Isso evita conflitos com @DocumentId e atualiza apenas os campos necessários
-//            val updates = hashMapOf<String, Any>(
-//                "title" to task.title,
-//                "description" to task.description,
-//                "isCompleted" to task.isCompleted,
-//                "userId" to task.userId
-//            )
-//
-//            tasksCollection.document(task.id).update(updates).await()
-//            Response.Success(true)
-//        } catch (e: Exception) {
-//            Response.Error(e.localizedMessage ?: "Erro ao atualizar tarefa")
-//        }
-//    }
 
     override suspend fun updateTask(task: Task): Response<Boolean> {
         return try {

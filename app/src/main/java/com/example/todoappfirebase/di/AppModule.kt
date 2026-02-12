@@ -14,9 +14,9 @@ import javax.inject.Singleton
 
 /** Gemini início
  *
- * Prompt: Crie um objeto AppModule anotado com @Module e @InstallIn(SingletonComponent::class) para prover as dependências do Hilt.
- * Crie funções @Provides @Singleton para retornar instâncias de FirebaseAuth e FirebaseFirestore.
- * Crie funções @Provides @Singleton para retornar as interfaces AuthRepository e TaskRepository, recebendo suas implementações (AuthRepositoryImpl e TaskRepositoryImpl).
+ * Prompt: De Di, o AppModule precisa ter as anotações com @Module e @InstallIn(SingletonComponent::class) para prover as dependências do Hilt.
+ * Tendo também funções @Provides @Singleton para retornar instâncias de FirebaseAuth e FirebaseFirestore.
+ * Finalize com @Provides @Singleton para retornar as interfaces AuthRepository e TaskRepository, recebendo suas implementações (AuthRepositoryImpl e TaskRepositoryImpl).
  *
  */
 @Module

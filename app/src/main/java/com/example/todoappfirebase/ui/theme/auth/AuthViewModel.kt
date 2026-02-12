@@ -12,9 +12,10 @@ import javax.inject.Inject
 
 /** Gemini início
  *
- * Prompt: Crie um AuthViewModel anotado com @HiltViewModel que injeta o AuthRepository.
+ * Prompt: O AuthViewModel é muito importante em momentos assim para administrar o controle do hilt e as autenticações da tela,
+ * garanta que tenha as anotações com @HiltViewModel que injeta o AuthRepository.
  * Crie um StateFlow _authState para gerenciar o estado do login (Loading, Success, Error).
- * Implemente funções de login e signUp que chamam o repositório dentro do viewModelScope e atualizam o estado.
+ * Implemente as funções de login e signUp que chamam o repositório dentro do viewModelScope e atualizam o estado.
  * Crie uma função checkAuthStatus para verificar se o usuário já está logado ao abrir o app.
  *
  */

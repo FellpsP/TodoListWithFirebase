@@ -1,57 +1,52 @@
 package com.example.todoappfirebase.ui.task
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.todoappfirebase.data.Response
 import com.example.todoappfirebase.ui.auth.AuthViewModel
 import com.example.todoappfirebase.ui.components.TaskItem
 import com.example.todoappfirebase.ui.navigation.Routes
+
+/**
+ * Tela principal de listagem de tarefas, redesenhada para um visual de Dashboard.
+ * Gerencia a exibição em tempo real, adição e exclusão de itens.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
     navController: NavController,
-    viewModel: TaskViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    val tasksState = viewModel.tasks.collectAsState()
+    val tasksState by taskViewModel.tasks.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
-
-    if (showDialog) {
-        AddTaskDialog(
-            onDismiss = { showDialog = false },
-            onConfirm = { title, desc ->
-                viewModel.addTask(title, desc)
-                showDialog = false
-            }
-        )
-    }
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Tarefas",
-                        fontWeight = FontWeight.SemiBold
+                        text = "Meu Dashboard", // Título mais moderno
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
                     )
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
                 actions = {
                     IconButton(onClick = {
                         authViewModel.signOut()
@@ -60,123 +55,96 @@ fun ListScreen(
                         }
                     }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            imageVector = Icons.Default.ExitToApp,
                             contentDescription = "Sair",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = MaterialTheme.colorScheme.error
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showDialog = true },
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                elevation = FloatingActionButtonDefaults.elevation(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Adicionar Tarefa"
-                )
+                Icon(Icons.Default.Add, contentDescription = "Nova Tarefa")
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.background)
         ) {
-            when (val response = tasksState.value) {
+            when (val response = tasksState) {
                 is Response.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-
                 is Response.Success -> {
                     val tasks = response.data
-
                     if (tasks.isEmpty()) {
+                        // Visual para lista vazia
                         Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(32.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Nenhuma tarefa adicionada",
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "Toque no botão + para adicionar sua primeira tarefa",
-                                style = MaterialTheme.typography.bodyMedium,
+                                text = "Nada por aqui ainda...",
+                                style = MaterialTheme.typography.headlineSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = "Toque no + para começar",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.outline
                             )
                         }
                     } else {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(vertical = 8.dp)
+                            contentPadding = PaddingValues(bottom = 80.dp, top = 8.dp)
                         ) {
-                            items(
-                                items = tasks,
-                                key = { it.id }
-                            ) { task ->
+                            items(tasks) { task ->
                                 TaskItem(
                                     task = task,
                                     onCheckedChange = { isChecked ->
-                                        viewModel.onTaskCheckedChanged(task, isChecked)
+                                        taskViewModel.onTaskCheckedChanged(task, isChecked)
                                     },
                                     onDelete = {
-                                        viewModel.deleteTask(task.id)
+                                        taskViewModel.deleteTask(task.id)
                                     }
                                 )
-                            }
-                            item {
-                                Spacer(modifier = Modifier.height(80.dp))
                             }
                         }
                     }
                 }
-
                 is Response.Error -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(32.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "⚠️",
-                            style = MaterialTheme.typography.displayMedium
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "Erro ao carregar tarefas",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = response.message,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = "Erro: ${response.message}",
+                        color = Color.Red,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
+        }
+
+        if (showDialog) {
+            AddTaskDialog(
+                onDismiss = { showDialog = false },
+                onConfirm = { title, desc ->
+                    taskViewModel.addTask(title, desc)
+                    showDialog = false
+                }
+            )
         }
     }
 }

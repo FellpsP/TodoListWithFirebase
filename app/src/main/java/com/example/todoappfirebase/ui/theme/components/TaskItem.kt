@@ -14,6 +14,10 @@ import com.example.todoappfirebase.data.model.Task
 /**
  * TaskItem corrigido com checkbox funcionando
  *
+ * Este componente Composable exibe uma única tarefa na lista,
+ * permitindo ao usuário marcar/desmarcar a conclusão e deletá-la.
+ * O design foi ajustado para se integrar à nova paleta de cores e ter um visual mais limpo.
+ *
  * Mudanças principais:
  * 1. Checkbox agora está sincronizado corretamente com task.isCompleted
  * 2. UI mais limpa e moderna
@@ -29,72 +33,72 @@ fun TaskItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp), // Padding vertical leve para separação entre os cards
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), // Elevação ligeiramente maior para destaque sutil
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface // Usa a cor de superfície do tema para o fundo do card
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(12.dp) // Padding interno dentro do Card para o conteúdo
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Checkbox
+            // Checkbox para marcar/desmarcar a tarefa como concluída
             Checkbox(
                 checked = task.isCompleted,
                 onCheckedChange = { isChecked ->
-                    onCheckedChange(isChecked)
+                    onCheckedChange(isChecked) // Propaga a mudança de estado para o ViewModel
                 },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
-                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    checkedColor = MaterialTheme.colorScheme.primary, // Cor principal do tema quando marcado
+                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant // Cor secundária para o estado desmarcado
                 )
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp)) // Espaçamento horizontal entre o checkbox e o texto da tarefa
 
-            // Conteúdo da tarefa
+            // Conteúdo da tarefa (título e descrição)
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f) // Ocupa o espaço restante disponível
             ) {
                 Text(
                     text = task.title,
                     style = MaterialTheme.typography.bodyLarge,
                     color = if (task.isCompleted)
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurfaceVariant // Cor mais suave se a tarefa estiver concluída
                     else
-                        MaterialTheme.colorScheme.onSurface,
+                        MaterialTheme.colorScheme.onSurface, // Cor padrão para tarefas não concluídas
                     textDecoration = if (task.isCompleted)
-                        TextDecoration.LineThrough
+                        TextDecoration.LineThrough // Adiciona um risco no texto se a tarefa estiver concluída
                     else
                         null
                 )
 
                 if (task.description.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(4.dp)) // Pequeno espaçamento vertical entre título e descrição
                     Text(
                         text = task.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant, // Cor secundária para a descrição
                         textDecoration = if (task.isCompleted)
-                            TextDecoration.LineThrough
+                            TextDecoration.LineThrough // Adiciona um risco no texto se a tarefa estiver concluída
                         else
                             null
                     )
                 }
             }
 
-            // Botão de deletar
+            // Botão de deletar tarefa
             IconButton(
-                onClick = onDelete,
-                modifier = Modifier.size(40.dp)
+                onClick = onDelete, // Ação de deletar a tarefa
+                modifier = Modifier.size(44.dp) // Aumenta o tamanho da área de toque do botão para melhor usabilidade
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Deletar tarefa",
-                    tint = MaterialTheme.colorScheme.error
+                    tint = MaterialTheme.colorScheme.error // Usa a cor de erro do tema para o ícone de deletar
                 )
             }
         }

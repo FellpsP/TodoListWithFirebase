@@ -2,7 +2,8 @@ package com.example.todoappfirebase.data
 
 /** Gemini início
  *
- * Prompt: Crie uma sealed class genérica chamada Response para gerenciar estados de Loading, Success e Error.
+ * Prompt: Aqui é muito importante, faça uma sealed class genérica chamada Response que irá gerenciar
+ * todos os estados das telas, sendo: Loading, Success e Error.
  *
  */
 sealed class Response<out T> {

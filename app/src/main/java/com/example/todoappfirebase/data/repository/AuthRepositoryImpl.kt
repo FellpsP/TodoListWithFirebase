@@ -7,7 +7,10 @@ import javax.inject.Inject
 
 /** Gemini início
  *
- * Prompt: Implemente a classe AuthRepositoryImpl que herda de AuthRepository. Use @Inject para receber o FirebaseAuth. Implemente os métodos login e signUp usando await() para converter as tarefas do Firebase em coroutines. Trate exceções retornando Response.Error.
+ * Prompt: Crie a classe AuthRepositoryImpl que herda de AuthRepository.
+ * Use @Inject para receber o FirebaseAuth.
+ * Implemente todos os métodos de login e signUp usando await() para converter as tarefas do Firebase em coroutines.
+ * Trate exceções retornando Response.Error.
  *
  */
 class AuthRepositoryImpl @Inject constructor(

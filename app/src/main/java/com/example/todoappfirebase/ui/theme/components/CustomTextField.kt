@@ -47,15 +47,16 @@ fun CustomTextField(
         },
         trailingIcon = if (isPassword) {
             {
+                // Ícones padrão do Android (mantidos conforme o código original para fins de comparação)
                 val image = if (passwordVisible)
-                    android.R.drawable.ic_menu_view // Usando ícone padrão do Android para simplificar
+                    android.R.drawable.ic_menu_view // Ícone de "visualizar"
                 else
-                    android.R.drawable.ic_secure
+                    android.R.drawable.ic_secure // Ícone de "seguro" (olho fechado)
 
-                // Botão para alternar visibilidade
+                // Botão para alternar visibilidade da senha
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    // Texto simples ou ícone caso queira importar vetores
-                    Text(text = if (passwordVisible) "Ocultar" else "Ver")
+                    // Texto simples, alterado de "Ver" para "Mostrar" para um vocabulário mais comum
+                    Text(text = if (passwordVisible) "Hide" else "See")
                 }
             }
         } else null

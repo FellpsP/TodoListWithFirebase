@@ -5,7 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 
 /** Gemini início
  *
- * Prompt: Crie uma interface AuthRepository com funções suspensas para login, cadastro, logout e uma propriedade para obter o usuário atual (currentUser). As funções devem retornar a classe Response.
+ * Prompt: Faça diligentemente a interface AuthRepository.
+ * Com funções suspensas para login, cadastro, logout e uma propriedade para obter o usuário atual (currentUser).
+ * As funções devem retornar a classe Response que servirá de auxilio.
  *
  */
 interface AuthRepository {

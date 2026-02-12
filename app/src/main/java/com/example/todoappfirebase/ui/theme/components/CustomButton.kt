@@ -35,7 +35,7 @@ fun CustomButton(
             .fillMaxWidth()
             .height(50.dp),
         enabled = enabled && !isLoading,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White
